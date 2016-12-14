@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- DispatcherServlet Context: определяет настройки одного сервлета; бины,
+        которые доступны только ему -->
+
+    <!-- Разрешаем использование аннотаций Spring MVC (то есть @Controller и.т.д) -->
+    <annotation-driven/>
+
+    <!-- Отображение видов на jsp-файлы, лежащие в папке /WEB-INF/views -->
+    <beans:bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <beans:property name="prefix" value="/WEB-INF/views/"/>
+        <beans:property name="suffix" value=".jsp"/>
+        <beans:property name="contentType" value="text/html;charset=UTF-8"/>
+    </beans:bean>
+
+    <!-- Всю статику (изображения, css-файлы, javascript) положим в папку webapp/resources
+        и замаппим их на урл вида /resources/** -->
+    <resources mapping="/resources/**" location="/resources/"/>
+
+    <beans:bean id="messageSource"
+                class="org.springframework.context.support.ResourceBundleMessageSource">
+        <beans:property name="basename" value="messages"/>
+        <beans:property name="fallbackToSystemLocale" value="false"/>
+        <beans:property name="defaultEncoding" value="UTF-8"/>
+    </beans:bean>
+
+    <!-- Файл с настройками контроллеров -->
+    <!--<beans:import resource="controllers.xml"/>-->
+    <context:component-scan base-package="org.itstep.ppjava13v2.kuleba.tastyLunch.controllers"/>
+
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <beans:property name="maxUploadSize" value="2097152"/>
+        <beans:property name="defaultEncoding" value="UTF-8"/>
+    </beans:bean>
+
+</beans:beans>

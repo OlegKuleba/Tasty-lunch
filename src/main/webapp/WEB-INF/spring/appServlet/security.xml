@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <http use-expressions="false">
+        <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/registration" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/logout" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/admin/upload" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/user/**" access="ROLE_ADMIN,ROLE_USER"/>
+        <intercept-url pattern="/admin/formTest" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/**" access="ROLE_ADMIN"/>
+
+        <form-login login-page="/" default-target-url="/user/order" login-processing-url="/login"
+                    authentication-failure-url="/?error=true"/>
+        <http-basic/>
+        <logout logout-url="/logout" logout-success-url="/"/>
+        <remember-me/>
+        <headers/>
+        <csrf disabled="true"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource"/>
+        </authentication-provider>
+    </authentication-manager>
+
+</b:beans>
